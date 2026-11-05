@@ -10,6 +10,7 @@
     - _Verify: npm test_
     - _Verify: python -m pytest backend/tests_
     - _Area: setup_
+    - _Issue: #1_
 
 - [ ] 2. Login page
   - [ ] 2.1 Login page
@@ -19,6 +20,7 @@
     - _Files: frontend/src/pages/Login.tsx, frontend/src/pages/Login.module.css, frontend/src/pages/Login.test.tsx_
     - _Verify: npm test -- Login_
     - _Area: ui_
+    - _Issue: #2_
 
 - [ ] 3. Dashboard
   - [ ] 3.1 Dashboard
@@ -28,6 +30,7 @@
     - _Files: frontend/src/pages/Dashboard.tsx, frontend/src/pages/Dashboard.module.css, frontend/src/pages/Dashboard.test.tsx_
     - _Verify: npm test -- Dashboard_
     - _Area: ui_
+    - _Issue: #3_
 
 - [ ] 4. Employees directory
   - [ ] 4.1 Employees directory
@@ -37,6 +40,7 @@
     - _Files: frontend/src/pages/Employees.tsx, frontend/src/pages/Employees.module.css, frontend/src/pages/Employees.test.tsx_
     - _Verify: npm test -- Employees_
     - _Area: ui_
+    - _Issue: #4_
 
 - [ ] 5. Employee details
   - [ ] 5.1 Employee details
@@ -46,6 +50,7 @@
     - _Files: frontend/src/pages/EmployeeDetail.tsx, frontend/src/pages/EmployeeDetail.module.css, frontend/src/pages/EmployeeDetail.test.tsx_
     - _Verify: npm test -- EmployeeDetail_
     - _Area: ui_
+    - _Issue: #5_
 
 - [ ] 6. My Profile
   - [ ] 6.1 My Profile
@@ -55,6 +60,7 @@
     - _Files: frontend/src/pages/MyProfile.tsx, frontend/src/pages/MyProfile.module.css, frontend/src/pages/MyProfile.test.tsx_
     - _Verify: npm test -- MyProfile_
     - _Area: ui_
+    - _Issue: #6_
 
 - [ ] 7. Add, edit, deactivate and anonymise an employee
   - [ ] 7.1 Add, edit, deactivate and anonymise an employee
@@ -65,3 +71,4 @@
     - _Verify: npm test -- EmployeeForm_
     - _Verify: npm test -- ConfirmDialog_
     - _Area: ui_
+    - _Issue: #7_
