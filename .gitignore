@@ -3,3 +3,33 @@
 .nexgile/greenfield/thread.jsonl
 .nexgile/greenfield/checkpoints/
 docs/input/
+
+# Node
+node_modules/
+dist/
+*.local
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# SQLite database (created and seeded at first start)
+backend/data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Test output
+coverage/
+playwright-report/
+test-results/
