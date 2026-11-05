@@ -1,7 +1,7 @@
 # Tasks: Employee Management System
 
-- [ ] 1. Project setup
-  - [ ] 1.1 Project setup
+- [x] 1. Project setup
+  - [x] 1.1 Project setup
     - Create the React + TypeScript + Vite frontend and the FastAPI backend skeleton, the shared stylesheet with the Look and feel colours and IBM Plex Sans faces, the SQLite schema for the three tables with the seed routine, the health path, the `pytest-playwright` runner with an `e2e/` folder holding a `.gitkeep` that the unit test runner leaves out, and one passing test.
     - Build every API operation of the design: `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`, `GET /api/dashboard`, `GET /api/employees`, `POST /api/employees`, `GET /api/employees/{id}`, `PATCH /api/employees/{id}`, `POST /api/employees/{id}/deactivate` (with `anonymise`), `GET /api/me/profile` and `PATCH /api/me/profile`, with the shared error shape, session cookie, CSRF and origin checks, role checks, projections, version checks and the seed data, and the pytest tests that call them.
     - `npm run dev` starts the API on `127.0.0.1` at `API_PORT` (default `8000`) and Vite on `127.0.0.1` at `PORT`, proxying `/api`; `Dev` seeds an empty database and leaves a seeded one as it is.
