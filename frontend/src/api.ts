@@ -69,7 +69,13 @@ function buildUrl(path: string, query?: RequestOptions['query']): string {
   return search ? `${url}?${search}` : url
 }
 
-export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+interface RawResponse {
+  status: number
+  ok: boolean
+  payload: unknown
+}
+
+async function send(path: string, options: RequestOptions = {}): Promise<RawResponse> {
   const method = options.method ?? 'GET'
   const headers: Record<string, string> = {
     Accept: 'application/json',
@@ -102,7 +108,7 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   }
 
   if (response.status === 204) {
-    return undefined as T
+    return { status: 204, ok: true, payload: undefined }
   }
 
   let payload: unknown = null
@@ -115,18 +121,106 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     }
   }
 
-  if (!response.ok) {
-    const body = payload as ApiErrorBody | null
-    const error = body?.error
-    throw new ApiError(
-      response.status,
-      error?.code ?? 'error',
-      error?.message ?? 'Something went wrong. Try again.',
-      error?.fields ?? {},
-    )
-  }
+  return { status: response.status, ok: response.ok, payload }
+}
 
-  return payload as T
+function toApiError({ status, payload }: RawResponse): ApiError {
+  const body = payload as ApiErrorBody | null
+  const error = body?.error
+  return new ApiError(
+    status,
+    error?.code ?? 'error',
+    error?.message ?? 'Something went wrong. Try again.',
+    error?.fields ?? {},
+  )
+}
+
+export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  const result = await send(path, options)
+  if (!result.ok) throw toApiError(result)
+  return result.payload as T
+}
+
+/**
+ * Read the current session without treating a signed-out answer as a failure.
+ *
+ * `GET /api/auth/me` answers 401 to a person who is not signed in, which is the
+ * normal answer on the Login page. A 401 is still a failed request in the
+ * browser, so the probe first checks whether a session could exist at all: with
+ * no session hint there is nothing to restore and no request is sent. When a
+ * hint is present the probe still clears the CSRF token and notifies the 401
+ * handler, but resolves to `null` instead of throwing.
+ */
+export async function probeSession<T>(path: string): Promise<T | null> {
+  if (!hasSessionHint()) return null
+  const result = await send(path, { method: 'GET' })
+  if (result.status === 401) {
+    clearSessionHint()
+    return null
+  }
+  if (!result.ok) throw toApiError(result)
+  return result.payload as T
+}
+
+/** The session cookie the API sets on sign-in. */
+export const SESSION_COOKIE = 'ems_session'
+
+/**
+ * The readable marker the app sets beside the session cookie.
+ *
+ * The session cookie itself is HttpOnly, so page script cannot see it. This
+ * marker holds no secret: it only records that a session was started in this
+ * browser, so a page load can decide whether asking `GET /api/auth/me` is
+ * worthwhile. It is cleared on sign-out and on a 401.
+ */
+export const SESSION_HINT_COOKIE = 'ems_session_hint'
+
+function readCookie(name: string): string | null {
+  if (typeof document === 'undefined' || !document.cookie) return null
+  for (const part of document.cookie.split(';')) {
+    const [key, ...rest] = part.trim().split('=')
+    if (key === name) return rest.join('=')
+  }
+  return null
+}
+
+function writeCookie(name: string, value: string, maxAgeSeconds: number): void {
+  if (typeof document === 'undefined') return
+  document.cookie = `${name}=${value}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`
+}
+
+/** Record that a session was started, so the next page load restores it. */
+export function markSessionStarted(): void {
+  // Eight hours, matching the server-side session lifetime.
+  writeCookie(SESSION_HINT_COOKIE, '1', 8 * 60 * 60)
+}
+
+/** Forget the session hint, after sign-out or a 401. */
+export function clearSessionHint(): void {
+  writeCookie(SESSION_HINT_COOKIE, '', 0)
+}
+
+/**
+ * Return True when the browser may hold a session.
+ *
+ * The HttpOnly session cookie cannot be read from page script, so the readable
+ * hint cookie is checked instead. A signed-out person has no hint, so the app
+ * sends no session request at all and the Login page loads without a failed
+ * request.
+ */
+export function hasSessionHint(): boolean {
+  return readCookie(SESSION_HINT_COOKIE) !== null
+}
+
+/**
+ * Return True when the browser holds the session cookie.
+ *
+ * The cookie is HttpOnly, so its value cannot be read; only its presence is
+ * checked, and page script cannot see it at all. Kept for callers that only
+ * need to know whether a session cookie was ever set.
+ */
+export function hasSessionCookie(): boolean {
+  return readCookie(SESSION_COOKIE) !== null
 }
 
 export const api = {
