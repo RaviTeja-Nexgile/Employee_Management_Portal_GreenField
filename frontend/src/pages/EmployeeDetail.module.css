@@ -1,0 +1,188 @@
+/* Employee details: phone stacks the label/value rows in one column; desktop
+   lays the information card out as a two-column label/value grid. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.backLink {
+  align-self: flex-start;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.headerText {
+  min-width: 0;
+}
+
+.headerMeta {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.editButton {
+  align-self: flex-start;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.label {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.value {
+  margin: 0;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.unavailable {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.unavailableText {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.unavailableLink {
+  font-weight: 500;
+}
+
+/* Edit dialog: a full-height sheet on a phone, a centered 560 px dialog on a
+   desktop, with a dimmed backdrop. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: var(--space-6);
+  background: var(--surface);
+  border-radius: 10px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+}
+
+.dialogTitle {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.dialogForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.dialogField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.dialogLabel {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.dialogInput {
+  height: 42px;
+  padding: 0 var(--space-3);
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.dialogInput:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+  border-color: var(--focus);
+}
+
+.dialogActions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .backdrop {
+    align-items: center;
+    padding: var(--space-6);
+  }
+
+  .dialog {
+    width: 560px;
+    max-height: calc(100vh - 48px);
+  }
+
+  .dialogActions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .header {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .editButton {
+    align-self: center;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-8);
+    row-gap: var(--space-6);
+  }
+}
