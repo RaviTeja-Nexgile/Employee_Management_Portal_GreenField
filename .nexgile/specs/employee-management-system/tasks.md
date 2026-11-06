@@ -32,8 +32,8 @@
     - _Area: ui_
     - _Issue: #3_
 
-- [ ] 4. Employees directory
-  - [ ] 4.1 Employees directory
+- [x] 4. Employees directory
+  - [x] 4.1 Employees directory
     - Build the Employees page at `/employees`: the title, the search box with its 250 ms debounce, the table with Name, Employee code, Work email, Job title and Department, pagination of 25 rows with the search, filters and page kept in the address, the empty state with Clear search, the Administrator's Add employee button, Include inactive checkbox, Status column and row action menu, the Manager's My direct reports checkbox, the loading placeholder and the error notice with Retry; style it for phone and desktop.
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10_
     - _Depends: 1_
