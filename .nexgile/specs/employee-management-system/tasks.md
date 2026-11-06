@@ -22,8 +22,8 @@
     - _Area: ui_
     - _Issue: #2_
 
-- [ ] 3. Dashboard
-  - [ ] 3.1 Dashboard
+- [x] 3. Dashboard
+  - [x] 3.1 Dashboard
     - Build the Dashboard at `/dashboard`: the greeting and subtitle, the Administrator's three summary cards and Open Employees action, the Manager's direct-report count, department and job title with Open my direct reports, the Employee's department, job title and Active status with Open My Profile, skeleton placeholders, and the error notice with Retry; style it for phone and desktop.
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6_
     - _Depends: 1_
