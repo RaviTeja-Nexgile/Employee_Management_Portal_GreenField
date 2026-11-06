@@ -12,8 +12,8 @@
     - _Area: setup_
     - _Issue: #1_
 
-- [ ] 2. Login page
-  - [ ] 2.1 Login page
+- [x] 2. Login page
+  - [x] 2.1 Login page
     - Build the Login page at `/login`: a centered card with the wordmark, the email and password fields, a Show/Hide password control and a full-width Sign in button, field errors for empty values, the "Email or password is incorrect." message, the submitting state, the redirect of a signed-in person to `/dashboard`, and the local-demo account note; style it for phone and desktop.
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.10_
     - _Depends: 1_
