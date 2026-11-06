@@ -42,8 +42,8 @@
     - _Area: ui_
     - _Issue: #4_
 
-- [ ] 5. Employee details
-  - [ ] 5.1 Employee details
+- [x] 5. Employee details
+  - [x] 5.1 Employee details
     - Build the Employee details page at `/employees/:id`: the Back to employees link, the name, job title and department header, the information card with the fields each role may see, the Administrator's Edit action, the "Employee unavailable" view for a missing, inactive or non-numeric record, the loading placeholder and the error notice with Retry; style it for phone and desktop.
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 6.9_
     - _Depends: 1_
