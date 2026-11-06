@@ -11,7 +11,16 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { api, onUnauthorized, setCsrfToken, type User } from './api'
+import {
+  api,
+  clearSessionHint,
+  hasSessionHint,
+  markSessionStarted,
+  onUnauthorized,
+  probeSession,
+  setCsrfToken,
+  type User,
+} from './api'
 
 interface AuthState {
   user: User | null
@@ -36,11 +45,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const clear = useCallback(() => {
     setCsrfToken(null)
     setUser(null)
+    clearSessionHint()
   }, [])
 
   const refresh = useCallback(async (): Promise<User | null> => {
     try {
-      const data = await api.get<MeResponse>('/auth/me')
+      // A signed-out person has no session hint, so no request is sent at
+      // all: the Login page loads without a failed request. With a hint the
+      // probe resolves a stale 401 to null instead of throwing. The session
+      // cookie itself is HttpOnly, so the readable hint is what a page load
+      // can check to restore a session after a reload.
+      if (!hasSessionHint()) {
+        clear()
+        return null
+      }
+      const data = await probeSession<MeResponse>('/auth/me')
+      if (!data) {
+        clear()
+        return null
+      }
       setCsrfToken(data.csrf_token)
       setUser(data.user)
       return data.user
@@ -66,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = useCallback(async (email: string, password: string) => {
     const data = await api.post<MeResponse>('/auth/login', { email, password })
+    markSessionStarted()
     setCsrfToken(data.csrf_token)
     setUser(data.user)
     return data.user
