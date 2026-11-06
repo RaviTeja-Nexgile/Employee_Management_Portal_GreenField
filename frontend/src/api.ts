@@ -104,6 +104,10 @@ async function send(path: string, options: RequestOptions = {}): Promise<RawResp
 
   if (response.status === 401) {
     csrfToken = null
+    // A 401 means the server session is gone, so the readable hint must go
+    // with it: otherwise the next page load probes again and logs another
+    // failed request.
+    clearSessionHint()
     if (unauthorizedHandler) unauthorizedHandler()
   }
 
