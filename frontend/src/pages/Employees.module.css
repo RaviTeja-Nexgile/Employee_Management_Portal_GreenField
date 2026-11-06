@@ -1,0 +1,345 @@
+/* The employee directory: header, search and filters, the table that scrolls
+   inside its own container, and pagination. Phone first, desktop from 768 px. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.header h1 {
+  margin-bottom: 0;
+}
+
+.header p {
+  margin-bottom: 0;
+}
+
+.addButton {
+  align-self: flex-start;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.search {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+.searchLabel {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.searchInput {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+}
+
+/* The table scrolls sideways inside this box. It must not grow past the page
+   column: a flex/grid child defaults to min-width:auto, so without min-width:0
+   the 720 px table would widen the box and push the pagination below it out of
+   the viewport, where the table's cells intercept the taps. */
+.tableWrap {
+  overflow-x: auto;
+  min-width: 0;
+  max-width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.table th,
+.table td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.table th {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--bg);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover td {
+  background: var(--bg);
+}
+
+.nameLink {
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.nameLink:hover {
+  text-decoration: underline;
+}
+
+.mono {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+}
+
+.statusActive {
+  background: #dcfce7;
+  color: var(--success);
+}
+
+.statusInactive {
+  background: #f1f5f9;
+  color: var(--text-muted);
+}
+
+.actionsHeader,
+.actionsCell {
+  width: 56px;
+  text-align: right;
+}
+
+.actionsCell {
+  position: relative;
+}
+
+.menuButton {
+  width: 32px;
+  height: 32px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.menuButton:hover {
+  background: var(--bg);
+  border-color: var(--border);
+}
+
+.menu {
+  position: absolute;
+  right: var(--space-4);
+  top: calc(100% - var(--space-2));
+  z-index: 10;
+  min-width: 160px;
+  padding: var(--space-1);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-card);
+  text-align: left;
+}
+
+.menuItem {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: 6px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.menuItem:hover {
+  background: var(--bg);
+}
+
+/* The empty row spans the whole table, which is 720 px wide on a phone and
+   scrolls sideways. Let it size to the visible container instead, so the
+   message and the Clear search button are never clipped at the right edge. */
+.emptyCell {
+  padding: 0;
+  white-space: normal;
+}
+
+.emptyCell > div {
+  position: sticky;
+  left: 0;
+  width: 100%;
+  min-width: 0;
+  max-width: 100vw;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 100%;
+}
+
+.emptyTitle {
+  margin: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.skeletonRow td {
+  padding: var(--space-3) var(--space-4);
+}
+
+.skeletonLine {
+  display: block;
+  height: 12px;
+  width: 70%;
+  border-radius: 6px;
+  background: #eef2f7;
+}
+
+/* Keep the pagination in its own stacking context above the table box, and
+   make it a real, tappable block on a phone: it sits below the table, never
+   under it, and its buttons stay reachable at 412 px. */
+.pagination {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+}
+
+.pageSummary {
+  color: var(--text-muted);
+}
+
+.pageButtons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 100%;
+}
+
+.pageButton {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.pageButton:hover {
+  background: var(--bg);
+}
+
+.pageButtonActive {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+
+.pageButtonActive:hover {
+  background: var(--primary-hover);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (min-width: 768px) {
+  .header {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .toolbar {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .search {
+    max-width: 360px;
+  }
+
+  .filters {
+    padding-bottom: var(--space-2);
+  }
+
+  .pagination {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

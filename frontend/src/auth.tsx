@@ -14,11 +14,11 @@ import {
 import {
   api,
   clearSessionHint,
-  hasSessionHint,
   markSessionStarted,
   onUnauthorized,
   probeSession,
   setCsrfToken,
+  shouldProbeSession,
   type User,
 } from './api'
 
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // probe resolves a stale 401 to null instead of throwing. The session
       // cookie itself is HttpOnly, so the readable hint is what a page load
       // can check to restore a session after a reload.
-      if (!hasSessionHint()) {
+      if (!shouldProbeSession()) {
         clear()
         return null
       }

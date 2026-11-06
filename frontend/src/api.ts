@@ -162,6 +162,19 @@ export async function probeSession<T>(path: string): Promise<T | null> {
   return result.payload as T
 }
 
+/**
+ * Return True when a page load should ask the API who is signed in.
+ *
+ * The session cookie is HttpOnly, so page script cannot see it. The readable
+ * hint is set on sign-in and cleared on sign-out and on a 401, so its absence
+ * means no session was started in this browser and the request would only
+ * answer 401 — a failed request on the Login page. A page load therefore asks
+ * only when the hint is present.
+ */
+export function shouldProbeSession(): boolean {
+  return hasSessionHint()
+}
+
 /** The session cookie the API sets on sign-in. */
 export const SESSION_COOKIE = 'ems_session'
 
